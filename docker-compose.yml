@@ -1,0 +1,50 @@
+version: '3'
+services:
+  chatbot:
+    build:
+      context: .
+      dockerfile: ./Dockerfile 
+      args:
+       - https_proxy
+    image: csibot
+    volumes:
+     - ./data:/testdata
+    environment:
+      - "POSTGRES_DB=unlockpa" 
+      - "POSTGRES_USER=unlockpa" 
+      - "POSTGRES_PASSWORD=unlockpa" 
+      - "POSTGRES_URL=unlockdb" 
+      - "POSTGRES_PORT=5432" 
+      - "POSTGRES_SCHEMA=unlockpa"
+    ports:
+     - "5001:5001"
+    command: ["python", "main.py", "run", "--host", "0.0.0.0", "--endpoint", "http://botmanager:5401"]
+    networks:
+     - unlockpa_net
+  botmanager:
+    build:
+      context: .
+      dockerfile: ./Dockerfile 
+      args:
+       - https_proxy
+    image: csibot:latest
+    volumes:
+     - ./data:/testdata
+     - ./dills:/app/data/dills
+    environment:
+      - "POSTGRES_DB=unlockpa" 
+      - "POSTGRES_USER=unlockpa" 
+      - "POSTGRES_PASSWORD=unlockpa" 
+      - "POSTGRES_URL=unlockdb" 
+      - "POSTGRES_PORT=5432" 
+      - "POSTGRES_SCHEMA=unlockpa"
+    ports:
+     - "5401:5401"
+    command: ["/app/wait-for-it.sh", "botdb:5432","--", "python", "main.py", "botmanager", "--host", "0.0.0.0"]
+    networks:
+     - unlockpa_net
+
+networks:
+  unlockpa_net:
+    external: true
+

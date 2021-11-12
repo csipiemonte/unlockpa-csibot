@@ -1,0 +1,33 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+venv/
+csibot/Include/
+csibot/Lib/
+csibot/Scripts/
+csibot/tcl/
+db-data/
+
+# IDE
+.idea/
+
+# logs
+logs/
+
+# output
+output.xlsx
+risposta.xlsx
+data/dills
+
+# Ignore with TortoiseGit Usage
+/csibot/Include
+/csibot/Lib
+/csibot/Scripts
+/csibot/tcl
+
+
+# w2v
+/data/w2v/
